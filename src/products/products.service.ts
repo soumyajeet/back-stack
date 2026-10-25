@@ -1,8 +1,14 @@
 import { Injectable } from '@nestjs/common';
 
+export interface Product {
+    id: number;
+    name: string;
+    price: number;
+}
+
 @Injectable()
 export class ProductsService {
-    private readonly products = [
+    private readonly products: Product[] = [
             { id: 1, name: 'Product 1', price: 10.99 },
             { id: 2, name: 'Product 2', price: 19.99 },
             { id: 3, name: 'Product 3', price: 5.99 },
@@ -12,12 +18,12 @@ export class ProductsService {
         return this.products;
     }
 
-    createProduct(product: { id: number; name: string; price: number }) {
+    createProduct(product: Product) {
         this.products.push(product);
         return { message: 'Product created successfully' };
     }
 
-    updateProduct(id: number, updatedProduct: { name?: string; price?: number }) {
+    updateProduct(id: number, updatedProduct: Partial<Product>) {
         const productIndex = this.products.findIndex(product => product.id === id);
         if (productIndex !== -1) {
             this.products[productIndex] = { ...this.products[productIndex], ...updatedProduct };
